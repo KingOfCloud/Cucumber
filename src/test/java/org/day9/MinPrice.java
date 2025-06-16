@@ -18,6 +18,7 @@ import org.testng.annotations.Test;
 public class MinPrice {
 	
 	WebDriver driver;
+	int total;
 	
 	@Test(priority=1)
 	public void Lauch() {
@@ -40,14 +41,55 @@ public class MinPrice {
 	                map.put(price, productList.get(i));
 	        }
 
+	        		//Minimum Price
 	        Set<Integer> keys = map.keySet();
 	       int minPrice = Collections.min(keys);  
 	        WebElement minPriceElement = map.get(minPrice);
 
 	        System.out.println("Cheapest Product: " + minPriceElement.getText());
-	        System.out.println("Price: ₹" + minPrice);
+	        System.out.println("Minimum Price: ₹" + minPrice);
 
 	        minPriceElement.click();
+	        
+	        		//Maximum Price
+	        Set<Integer> keys1 = map.keySet();
+		       int maxPrice = Collections.max(keys1);  
+		        WebElement maxPriceElement = map.get(maxPrice);
+
+		        System.out.println("Cheapest Product: " + maxPriceElement.getText());
+		        System.out.println("Maximum Price: ₹" + maxPrice);
+
+		        maxPriceElement.click();
+		        
+		        		//Average Price
+		        for (int i = 0; i < priceList.size(); i++) {
+		            String priceText = priceList.get(i).getText().trim().replaceAll("[^0-9]", "");
+		                int price = Integer.parseInt(priceText);
+		                total +=price;
+		                map.put(price, productList.get(i));
+		        }
+		        System.out.println("Total amount of Product is:"+ total);
+		        int average = total / priceList.size();
+		        System.out.println("Average price is: ₹" + average);
+		        
+		        int nearestprice = 0;
+		        int minDiff = Integer.MAX_VALUE;
+		        
+		        for (Integer price : map.keySet()) {
+		        	int diff = price - average;
+		        	if (diff<0) {
+		        	diff = -diff;
+		        }
+		        
+		        if (diff < minDiff) {
+		        	minDiff = diff;
+		        	nearestprice = price;
+		        }			    
+		    }
+
+			   WebElement product = map.get(nearestprice);
+			   System.out.println("Averag: ₹" +nearestprice);
+			   System.out.println("Product Name: "+ product.getText());
 	}
 	
 	
